@@ -6,6 +6,8 @@ TESTER_ENABLED = True
 GETTER_ENABLED = True
 API_ENABLED = True
 
+import time
+import asyncio
 from multiprocessing import Process
 from api import app
 from getter import Getter
@@ -24,9 +26,10 @@ class Scheduler():
 
     def schedule_getter(self, cycle=GETTER_CYCLE):
         """Cycle get proxy"""
-        getter = Getter()
+        coroutine = Getter()
         while True:
-            getter.run()
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(coroutine.run())
             time.sleep(cycle)
 
 

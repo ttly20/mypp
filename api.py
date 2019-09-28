@@ -23,7 +23,8 @@ def get_proxy():
     return conn.random()
 
 
-@app.route():
+@app.route('/youduoshaodaili')
+def count():
     """Get proxy count"""
     conn = get_conn
     return str(conn.count())

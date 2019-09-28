@@ -1,5 +1,4 @@
 import re
-import asyncio
 from aiohttp import ClientSession
 from lxml import etree
 from db import RedisClient, POOL_UPPER_THRESHLD
@@ -52,7 +51,7 @@ class Crawler(object, metaclass=ProxyMetaClass):
             result = html.xpath('//div/div/table/tr[@class]')
             for item in result:
                 data = item.xpath('td/text()')
-                proxy.append(':'.join(data[0], data[1]))
+                proxy.append(':'.join([data[0], data[1]]))
         return proxy
 
 

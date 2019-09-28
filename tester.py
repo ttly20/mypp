@@ -2,8 +2,9 @@ VALID_STATUS_CODES = [200, 301]
 TEST_URL = 'http://www.zhihu.com'
 BATCH_TEST_SIZE = 100
 
+import time
 import asyncio
-from aiohttp import TCPConnector, ClientSession
+from aiohttp import TCPConnector, ClientSession, ClientError, ClientConnectorError
 from db import RedisClient
 
 class Tester(object):
@@ -16,8 +17,8 @@ class Tester(object):
     async def test_single_proxy(self, proxy):
         """Test single proxy"""
         conn = TCPConnector(verify_ssl=False)
-        async with ClientSession(connector=conn) as session:
-            try:
+        try:
+            async with ClientSession(connector=conn) as session:
                 if isinstance(proxy, bytes):
                     proxy = proxy.decode('utf-8')
                 real_proxy = 'http://' + proxy
