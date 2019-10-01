@@ -19,14 +19,14 @@ def index():
 @app.route('/geiwoyigedaili')
 def get_proxy():
     """Get an random enabled proxy"""
-    conn = get_conn
+    conn = get_conn()
     return conn.random()
 
 
 @app.route('/youduoshaodaili')
 def count():
     """Get proxy count"""
-    conn = get_conn
+    conn = get_conn()
     return str(conn.count())
 
 

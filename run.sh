@@ -1,3 +1,3 @@
 #!/bin/bash
-source venv/bin/activate
-./run.py
+sudo source venv/bin/activate
+sudo ./run.py
