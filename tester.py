@@ -31,10 +31,10 @@ class Tester(object):
                     else:
                         self.redis.derease(proxy)
                         print('请求响应不合法: ', proxy)
-            except(ClientError, ClientConnectorError, TimeoutError, \
-                    AttributeError):
-                self.redis.decrease(proxy)
-                print('代理请求失败: ', proxy)
+        except(ClientError, ClientConnectorError, TimeoutError, \
+                AttributeError):
+            self.redis.decrease(proxy)
+            print('代理请求失败: ', proxy)
 
 
     def run(self):
