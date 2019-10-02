@@ -55,12 +55,21 @@ class Crawler(object, metaclass=ProxyMetaClass):
         return proxy
 
 
-    # async def crawl_mipu(self):
-    #     """Get Mi Pu free proxy"""
-    #     print('获取米扑代理')
-    #     # html = etree.HTML(await self.get('https://proxy.mimvp.com/free.php'))
-    #     # print(html.xpath('//body/div/div[@class="free-content"]/'))
-    #     return [1,2,3]
+    async def crawl_ihuan(self):
+        """Get Xiao Huan free proxy"""
+        print('获取小幻代理')
+        html = etree.HTML(await self.get('https://ip.ihuan.me'))
+        items = html.xpath('//table/tbody/tr')
+        proxy = []
+        for item in items:
+            ipInfo = item.xpath('td/a/text()')
+            ipAttr = item.xpath('td/text()')
+            ipInfoLen = len(ipInfo)
+            ipAttrLen = len(ipAttr)
+            if ipInfoLen is not 0 and ipAttrLen is not 0:
+                if ipInfo[ipInfoLen - 1] == '高匿':
+                    proxy.append(':'.join([ipInfo[0], ipAttr[0]]))
+        return proxy
 
 
     async def crawl_kuaidaili(self, page_count=10):
@@ -77,9 +86,9 @@ class Crawler(object, metaclass=ProxyMetaClass):
         return proxy
 
 
-    # async def crawl_quanwangdaili(self, page_count=10):
-    #     print('获取全区代理')
-    #     return [1,2,3]
+    async def crawl_quanwangdaili(self, page_count=10):
+        print('获取全区代理')
+        return [1,2,3]
 
 
 class Getter:
