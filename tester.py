@@ -16,8 +16,8 @@ class Tester(object):
 
     async def test_single_proxy(self, proxy):
         """Test single proxy"""
-        conn = TCPConnector(verify_ssl=False)
         try:
+            conn = TCPConnector(verify_ssl=False)
             async with ClientSession(connector=conn) as session:
                 if isinstance(proxy, bytes):
                     proxy = proxy.decode('utf-8')

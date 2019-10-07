@@ -1,3 +1,4 @@
+import json
 from flask import Flask, g
 from db import RedisClient
 
@@ -16,11 +17,17 @@ def index():
     return '<h1>你好哇,这里什么都没有噢.</h1>'
 
 
-@app.route('/geiwoyigedaili')
-def get_proxy():
+@app.route('/geiwoyizudaili/<page>')
+def get_proxy(page):
     """Get an random enabled proxy"""
     conn = get_conn()
-    return conn.random()
+    if page == 1:
+        start = 1 * int(page) - 1
+        stop = start + 9
+    else:
+        start = int(page) * 10 -1
+        stop = start + 10
+    return json.dumps(conn.random(start, stop))
 
 
 @app.route('/youduoshaodaili')

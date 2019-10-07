@@ -86,10 +86,6 @@ class Crawler(object, metaclass=ProxyMetaClass):
         return proxy
 
 
-    async def crawl_quanwangdaili(self, page_count=10):
-        print('获取全区代理')
-        return [1,2,3]
-
 
 class Getter:
 

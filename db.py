@@ -1,5 +1,4 @@
 import redis
-from random import choice
 
 # Constant setting
 
@@ -35,31 +34,31 @@ class RedisClient:
             return self.db.zadd(REDIS_COLLECTIONS, { proxy: score })
 
 
-    def random(self):
+    def random(self, start, stop):
         """
-        If there is a proxy with the highest score, return it,
-        otherwise return an agent with 0 to 50 points.
+        Return all proxies from start to stop.
         """
-        result = self.db.zrangebyscore(REDIS_COLLECTIONS,
-                MAX_SCORE, MAX_SCORE)
-        if len(result):
-            return choice(result)
+        result = []
+        items = self.db.zrevrange(REDIS_COLLECTIONS, start, stop)
+        if len(items):
+            for item in items:
+                if isinstance(item, bytes):
+                    result.append(str(item, encoding='utf-8'))
+                else:
+                    result.append(item)
+            return result
         else:
-            result = self.db.zrevrange(REDIS_COLLECTIONS, 0, 50)
-            if len(result):
-                return choice(result)
-            else:
-                Exception('无可用代理')
+            Exception('无可用代理')
 
 
     def decrease(self, proxy):
         """Score minus,if less than or equal to 0,delete."""
         score = self.db.zscore(REDIS_COLLECTIONS, proxy)
         if score and score > MIN_SCORE:
-            print(proxy, score, '-1')
-            return self.db.zincrby(REDIS_COLLECTIONS, proxy, -1)
+            print('代理 ', proxy, '当前分数 ', score, '减1')
+            return self.db.zincrby(REDIS_COLLECTIONS, -1, proxy)
         else:
-            print(proxy, score, '移除')
+            print('代理 ', proxy, '当前分数 ', score, '移除')
             return self.db.zrem(REDIS_COLLECTIONS, proxy)
 
 
